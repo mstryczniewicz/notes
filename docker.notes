@@ -1,0 +1,80 @@
+commands:
+docker help <command>                         display help on the command
+docker build                                  build an image from a Dockerfile
+docker commit                                 create an image from a container
+docker diff                                   show changes in a container
+docker images                                 list images
+docker info                                   display Docker information
+docker inspect                                show the configuration of a Docker image/container
+docker logs                                   show logs of a container
+docker network                                list and manage docker networks
+docker port                                   show all ports exposed by a container
+docker ps                                     list containers
+docker rm                                     remove a container
+docker rmi                                    remove an image
+docker run                                    run a container from an image
+docker exec                                   execute a command in a running container
+docker search                                 search for a Docker image on Docker Hub
+docker start/stop/pause/unpause               manage a container's state
+docker push                                   push an image to Docker Hub
+
+examples:
+docker -H <server_ip>:2375 run hello-world    run hello-world container on a remote machine
+docker search <name>                          search docker repository for image <name> (e.g. python)
+docker run -i -t ubuntu:18.04 /bin/bash       run ubuntu:18.04 and call /bin/bash command in interactive mode
+docker exec -i -t ubuntu:18.04 /bin/bash      execute /bin/bash in an already running container
+docker diff <container_id>                    print all changes made to a container (e.g. new apps installed)
+docker commit <container_id> <image_name>     create an image from a container (e.g. after modifications)
+docker build -t <image_name> .                build a new image from a Dockerfile that is in the same dir
+docker run -e NAME=Marcin <image_name>        run a container with env var NAME set to value Marcin
+docker create                                 create a container without running it
+docker logs <container_id>                    show logs of a container
+docker inspect --format '{{ .NetworkSettings.IPAddress }}' <container_id>   format output of inspect command
+docker port <container_id>                    shows port mappings of a container
+docker rm $(docker ps --no-trunc -aq)         remove all stopped containers
+    -q                                          quiet mode (show only IDs)
+    --no-trunc                                  do not truncate the output (return longer container IDs)
+docker rmi $(docker images -q)                remove all images (**)
+docker system prune                           remove all dangling data (containers stopped, volumes without containers, images without containers)
+    docker container prune
+    docker image prune
+    docker network prune
+    docker volume prune
+
+parameters of the 'docker run' command (maybe also others):
+    -d                                        detach (run a container in the background)
+    -v <host_path>:<container_path>           specify the volume and mount it in the container
+    --volumes-from <container>                use volumes which are specified in another container(*)
+    --name <name>                             allows to name a container
+    --rm                                      the container will remove itself as soon as it's stopped
+    -p <host_ip>:<host_port>:<cont_port>      specify port mapping
+    -P                                        perform automatic port mapping to any free ports on host
+
+--network                       flag that allows to specify network settings of a container
+    bridge (default)            network throught the default docker bridge (allows to specify ports to fwd)
+    none                        no network
+    container                   entwork joined with another (specified) container
+    host                        host's network  (everything started in the container is visible outside)
+    NETWORK                     user-created network (using the 'docker network create' command)
+
+structure of a Dockerfile
+FROM                      defines the image on top of which the new image will be built
+RUN                       specifies the commands to run inside the container
+COPY                      copies a file or a directory into the filesystem of the image
+ENTRYPOINT                defines which application should be run in the executable container
+ENV                       allows to run a container with specified env vars (-e flag in 'docker run' command takes precedence)
+EXPOSE                    informs users which ports they should publish via the -p flag
+VOLUME /host_directory    specifies the volume, it will be mapped under /var/lib/docker/vfs on host
+
+(*) A very common approach to data management with Docker is to introduce an additional layer, in the form of data volume containers. A data volume container is a Docker container whose only purpose is to declare the volume. Then, other containers can use it (with the --volumes-from <container> option) instead of declaring the volume directly.
+
+In most real-life scenarios, we don't use the stopped containers, and they are left only for debugging purposes.
+
+(**)In the case of images, the automatic cleanup process is slightly more complex. Images don't have states, so we cannot ask them to remove themselves when not used. The common strategy would be to set up a cron cleanup job, which removes all old and unused images. In order to prevent the removal of images with tags (for example, so as not to remove all the latest images), it's very common to use the 'dangling' parameter:
+    docker rmi $(docker images -f "dangling=true" -q)
+If we have containers that use volumes, then, in addition to images and containers, it's worth thinking about cleaning up volumes. The easiest way to do this is to use the following command:
+    docker volume ls -qf dangling=true | xargs -r docker volume rm
+
+CTRL-PQ         klikniecie skrotu w terminalu kontenera powoduje wyjscie z kontenera i pozostawienie procesu kontenera w tle
+user remapping  pozwala uruchamiac kontener jako non-root user, a w srodku kontener bedzie myslal ze ma roota
+                  sa pewne ograniczenia (np nie mozna polaczyc takiego kontenera w siec typu host)

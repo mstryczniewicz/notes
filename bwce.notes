@@ -1,0 +1,211 @@
+Day 1
+  TIBCO EBX
+    TIBCO acquired Orchestra
+    EBX is an MDM product (master data management)
+
+  why ems doesn't work for cloud:
+    requires a server running at a given address (does not comply with the cloud concept, where IP changes frequently etc)
+    better alternative: FTL
+      registry which keeps track of clients willing to exchange messages
+
+  a container must include a full runtime environment
+    guest OS inside the container only provides drivers to access files and network
+
+  application contains exactly one application module and 0 to n shared modules
+    application modules can contain both public (available outside, to other applications) and private processes
+    shared modules can only contain private processes (subprocesses)
+
+  BW Enterprise Edition
+    provides wider connectivity options than BWCE
+    can contain activities which are stateful (checkpoint etc)
+
+  BWCE
+    stateless processes only (still possible to write to DB or disk though)
+      for this reason less palettes than BWEE (no rv, no checkpoints)
+      no activities which are inherently stateful
+
+  public process - exposes services to other applications (yellow boundary)
+    every public process has an associated 'component' where service bindings are defined
+  private process - visible only to the application itself (blue or green boundary)
+    private processes do not have a 'component' - therefore can only use 'reference bindings'
+
+  transition
+    the 'error' transition (arrow) should not be used, use the error handler instead
+
+  processes in BWEE and BWCE are services by default (unless they contain a process starter, e.g. timer)
+    in BW5 it was necessary to convert a process into a service
+
+  BW6:
+    stricter type checking in the mapper compared to BW5
+
+  tester starts all processes which have components associated with them (Module Descriptors > Components)
+
+  all logging in BW6 is based on the logback framework (made by a guy behind log4j)
+  never do performance measurements in debug mode (too much overhead)
+
+  docker commands:
+    ADD - used to add and application that will get started after container starts
+    COPY - used to add resources, dependencies etc to the contaner
+
+  bwce-runtime-<version>.zip package (build pack) - get it from eDelivery TIBCO (https://edelivery.tibco.com)
+    necessary to create a BWCE Base Container
+    after that can ADD an application to it (only one)
+
+  openshift, kubernetes - management of docker images (analogue to TEA or TIBCO Administrator)
+
+  BWCE approach:
+    one microservice = one application = one ear
+    otherwise you can't scale when you have multiple services in a single ear file
+
+Day 2
+  EMS factories
+    allow connection reuse
+    preinstantiated connections on EMS side - code will be faster
+    the application queries the factory for a connection instead of establishing it directly
+    connection pool
+    better for administration - max connections is limited by EMS configuration (factories.conf)
+
+  in BWCE the runtime libraries for EMS are not shipped with the product by default
+    for design time everything is in place
+    runtime EMS libs can be added by bwinstall command line utility
+
+  after migrating a project from BW6 to BWCE, processes need to be manually switched from stateful to stateless (right clicking on every error in problem view?)
+    strongly suggested to redesign an application
+  
+  jar files are loaded dynamically in Business Studio, bundles need a BusinessStudio restart to be loaded
+    bundles are OSGi bundles required for runtime, based on jars which are used at design time
+      e.g. oracle drivers, ems drivers etc.
+  
+  unit 8:
+    edge services are good candidates to be transformed into microservices
+      as opposed to core services
+  
+  get, put, delete, and patch are idempotent operations
+  post is not an idempotent operation
+  an idempotent operation gives the same result no matter how many times it is performed
+    (memory status will be the same)
+  
+  the swaggerUI interface is included and available for REST services at:
+  <containerIP>:<port>/swagger
+  
+  unit 9:
+  service registries:
+    consul
+    eureka
+
+Day 3
+  CONSUL_SERVER_URL - built-in environment variable, does not need to be defined in an application - the engine expects it under this name
+    the list of similar built-in env vars is available in the documentation
+    https://docs.tibco.com/pub/bwce/2.3.4/doc/html/GUID-25BD2BA4-6BA4-418C-98D4-6EB3C9196399.html
+  Service Registries - only Consul and Eureka are supported as of BWCE 2.4
+    it is not possible to use any other service registry
+  
+  kubernetes takes care of load balancing, including the management of service registries, load balancing + fault tolerance
+    service registries can be grouped into clusters, and kubernates will take care of FT + load balancing + discovery of such services
+  
+  unit 10: shared modules
+    subprocesses
+      direct subprocesses (green process boundary, start and end activities)- do not require a wsdl (just like a BW5 subprocess), need to use the 'call process' activity to invoke them
+      service subprocesses (blue process boundary, service and reference chevrons) (preferred approach) - requires a wsdl
+        preferred for cleanliness
+        if it turns out later that it needs to be exposed as a public service, it is much easier to convert than a direct subprocess
+      subprocesses are executed in spawn mode by default (checkbox for 'inline' option available)
+    
+    invocation of REST API:
+      InvokeRESTAPI activity - similar to CallProcess activity
+        no reference chevron created - not visible which services are invoked from the process
+        not the preferred approach
+      drag and drop json schema -> click service reference
+        preferred way of invoking REST API
+        rest invocations are always internal
+      manual configuration by clicking and configuring the reference chevron
+        also possible
+  
+  unit 11: advanced debugging
+    OSGi allows running multiple versions of the same jar in a single JVM
+      BW6 can take advantage of this feature since version 6.5
+      BWCE sidesteps this issue completely - one application = one container
+        one jar = one modules
+        jars are represented by bundles
+        single application might be comprised of multiple jars
+          1 application module + 0-n shared modules
+          + platform bundles (paletters etc)
+    remote debugging is not available in BWCE (connecting to a deployed app)
+    docker logs - command which displays logs of a container
+    logging_config_file.png <- screenshot of the location of logback.xml, which can be used to configure logging levels
+      all loggers inherit from the "ROOT" logger
+    BW_LOGLEVEL - additional property which can be used to specify loglevel during application startup with docker
+      e.g. docker run -i ... -e BW_LOGLEVEL=WARN
+    debugging is also possible via the OSGi console of an AppNode
+      to access it, hit <Enter> in the debug/run console
+      log on to an AppNode via ssh
+      can type OSGi commands
+        AppNode uses port 1122 by default, equinox is the default user
+        additional OSGi commands supported with every successive BW6/BWCE version (check patch notes)
+          can be listed with 'help' command in the OSGi console
+  
+  unit 12: application monitoring
+    BW Monitoring Application - can be downloaded from TIBCO site
+      a dashboard application, also can run inside a container
+      look and feel similar to TEA, but used for monitoring only
+      BW_APP_MONITORING_CONFIG - url of the dashboard, needs to be included as a parameter in a 'docker run' command of the application that needs to be monitored
+        the application container is pushing information to the monitoring application
+      
+      dashboard monitoring options:
+        Process Instrumentation ON/OFF - enable statistics on a process level
+        Process Monitor ON/OFF - enable statistics of every single activity
+      
+      elapsed time - including time that the process spent in a 'paged' status
+      execution time - real cpu time used
+      
+  unit 13: circuit breakers
+    hystrix libraries are implemented on the client side of a service (by a client lib)
+      because the client knows if the invocation of a service was successful or not
+    hystrix dashboard is also available to monitor the status
+    when you are dealing with a cluster of servers, there is a delay of a few seconds in the hystrix dashboard
+    hystrix dashboard:
+      two ports: http port to access dashboard, and tcp port to stream data to it from containers/applications
+    hystrix can be enabled in a HTTP Client configuration
+      Command Name must be unique (and used by all clients that invoke the same service)
+    hystrix dashboard has to be pointed to the application which is supposed to report to it (by typing the address in the empty field on hystrix dashboard page)
+      8090 is the default port
+    
+  unit 14: unit testing
+    a single process can only have a single test file
+    a single test file can be associated with multiple processes
+      it is recommended to maintain a 1:1 relation in both directions
+    
+  unit 15: security considerations
+    FTL stores client role for each client, message structure and transport protocol (?)
+    if a service does not implement some operation (POST, GET etc), it is strongly recommended to disable it in the related http client configuration as well
+    
+  unit 16: monitoring using tibco hawk (screenshot)
+    hawk agent (HWA) - acting as a gateway for communication with an external bus
+    hawk micro agent (HMA) - performs actual monitoring, communicates with hawk agent via an internal bus
+    HWA - contains rules to perform actions based on them by HMA
+    HMA exposes a set of methods which can be invoked by HWA
+    HWA publishes the results of communication with HMA on an external bus
+    event server (optional) listens for event from HWAs and stores them in a database
+    HWK web console can display the current situation of monitoring, and design and deploy rules to HWAs
+    in case of BWCE, the only possible option of communication between hawk agents is TCP (both internal and external bus)
+      HAWK 6 must be used for this purpose (prev vers do not contain the option of TCP communication)
+    most TIBCO products embed micro agents
+    
+    cluster manager keeps track of addresses of all containers
+      facilitates communication between containers (?)
+      needs to be started first in an environment
+        otherwise services will not be able to start each other
+      performs the role of a service registry for hawk agents
+    hawk components need to be started in a correct order (cluster manager first etc)
+      this can be enforced with the docker-compose command
+    
+  unit 17: conclusion
+    SAGA design pattern for distributed transactions
+      compensating (rolling-back) transactions in case of errors etc
+    BWEE 6.5+ == BWCE 2.4+
+    Flogo - uses golang language
+      IDE - two options:
+        web based
+        create json file by hand
+      resulting 'ear files' are very thin (can be even executed on sensors)
+    

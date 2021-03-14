@@ -1,0 +1,12 @@
+arrays
+  my_array=(apple banana "Fruit Basket")    initialization of an array
+  new_array[2]=apricot                      not all elements of an array need to be initialized
+  
+  echo ${my_array[@]}                       prints out the whole array
+  echo ${#my_array[@]}                      prints the length of the array
+  echo ${my_array[3]}                       prints 4th element
+  
+  my_array[4]="carrot"                      value assignment
+  echo ${my_array[${my_array[@]}-1]}        prints last element of an array
+  my_array[${#my_array[@]}]=pomegranate     appends a new element at the end of an array
+  

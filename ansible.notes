@@ -1,0 +1,28 @@
+syntax:
+ansible <target> -m <module_name> -a <module_arguments>
+
+/etc/ansible/hosts                  inventory of all machines
+/etc/ansible/ansible.cfg            ansible config
+
+ansible all -m ping                 ping all machines defined in the inventory
+ansible all -a "echo hello"         execute the command "echo hello" on all machines
+
+ansible-playbook playbook.yml       execute all plays in the given playbook.yml
+    --ask-sudo-pass                     argument necessary if the server requires a password for the sudo command
+    -e ansible_become_pass=<sudo_pass>  alternative way of providing a sudo password (e.g. in scripts)
+    -f <num_of_threads>                 runs tasks in parallel on the specified number of threads
+
+ansible-galaxy install username.role_name       install a role from ansible galaxy
+ansible-galaxy install -r requirements.yml      install all roles defined in requirements.yml
+
+- each ansible module is designed to be idempotent
+- sample ansible playbook containing one play comprised of two tasks:
+    ---
+    - hosts: web1
+      become: yes
+      become_method: sudo
+      tasks:
+      - name: ensure apache is at the latest version
+        apt: name=apache2 state=latest
+      - name: ensure apache is running
+        service: name=apache2 state=started enabled=yes

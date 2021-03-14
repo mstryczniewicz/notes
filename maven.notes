@@ -1,0 +1,47 @@
+generate a new project from quickstart-archetype:
+mvn archetype:generate -DgroupId=com.mycompany.app -DartifactId=my-app -DarchetypeArtifactId=maven-archetype-quickstart -DarchetypeVersion=1.4 -DinteractiveMode=false
+
+built-in lifecycles:
+  default                   does everything related to compiling and packaging the project (cannot be executed directly)
+  clean                     removes temp files from the output directory
+  site                      handles everything related to generating documentation
+  
+some of the build phases of the default lifecycle:
+  validate                  validates the project and makes sure the dependencies are downloaded
+  compile                   compiles the source code of the project
+  test                      runs the tests using a suitable testing framework (these tests should not require the code to be packaged or deployed)
+  package                   packs the compiled code in its distributable format (e.g. jar)
+  install                   installs the package into the local repo, for use as dependency in other projects locally
+  deploy                    copies the final package to the remote repository to be shared with other developers and projects
+  
+profiles:
+  -P profile-name           launches maven with the specified profile
+  
+archetypes:
+  mvn eclipse:eclipse       generates an archetype for the Eclipse IDE (pom file needs to exist)
+  mvn idea:idea             generates an archetype for the IntelliJ IDEA
+  
+tests:
+  mvn test                          executes the tests
+  mvn test-compile                  compiles test sources without executing them
+  mvn surefire-report:report        runs tests and generates an html page with test results
+  mvn surefire-report:report-only   generates an html page without re-running tests
+
+dependencies:
+  <scope>:
+    compile
+    test
+    runtime
+
+execute the newly compiled and packaged jar:
+  java -cp target/my-app-1.0-SNAPSHOT.jar com.mycompany.app.App
+
+mvn enforcer:display-info       display info about the operating system (can be used for profile activation)
+mvn dependency:tree             display the tree of dependencies
+mvn effective-pom               display the effective pom
+  -Doutput=effective-pom.xml    (param) save the effective pom to file effective-pom.xml
+mvn help:active-profiles        display which profiles are active by default
+  -Denv=test                    (param) display which profiles are active when system property env=test
+mvn help:evaluate               allows to evaluate a maven expression and returns the result
+  -Dexpression=project.version  (param) return the value of ${project.version} from the pom file
+    -q -DforceStdout            (param) performs the prev command in quiet mode and returns just the output

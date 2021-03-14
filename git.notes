@@ -1,0 +1,101 @@
+GOLDEN RULE: do not change commit history that has already been pushed to a remote repository
+<commit>                    can be either absolute commit (hash) or relative, e.g. HEAD~1 means one commit before HEAD
+
+git init                    initialize a git repository
+
+git status                  current status of the repository
+
+git add <filename>          add a file to staging area
+
+git show <commit>           view all changes that were made in a commit compared to its parent
+
+git diff                    view all local changes that were made in the repository (diff between working dir and staging area)
+git diff --staged           view all changes between staging area and the most recent commit
+git diff <filename>         view changes that were made in a file compared to its committed version
+git diff <commit1> <commit2>    view all changes between two commits
+
+git log                     show git log
+    -n <number>                 show the last <number> of commits
+    --stat                      show which files were modified
+    --graph                     show the log as a graph
+    --oneline                   show each commit as a single line
+git log --graph oneline <branch1> <branch2>     compare commits on two branches in the form of a graph
+
+git branch                  view all local branches
+    -a                          view all branches (including the ones on remote)
+git branch <branch>         create a new branch
+    -d                          delete a branch (only the label, the commits remain)
+git branch <branch> <commit>  create a new branch at a given commit
+git branch -f master HEAD~3 forcefully reassign a branch to a different commit
+git branch -u o/main foo    set local branch foo to track remote branch o/main
+  git branch -u o/main        same as above, if foo is currently checked out
+
+//note: checkout will eventually be replaced by switch for working with branches
+git checkout <branch>       switch to the specified branch
+    -b                          create the branch first and then switch to it
+git checkout <commit>       revert to a previous commit
+git checkout master         switch back to master (latest) commit
+git checkout -b foo o/main  create local branch foo and set it to track remote branch o/main
+
+git merge <branch>          merge the specified branch into the current branch
+git merge <b1> <b2>         merge the changes on branch <b2> into <b1>
+
+git restore <filename>      discard uncommitted local changes from a file (also used to restore deleted files)
+git restore -p <filename>   discard selected changes from a file (git will walk through them)
+git restore .               discard all local changes
+git restore --source <commit> <filename>    restore a file to the given revision
+
+git commit --amend -m "Message"     overwrite (amend) the message of the latest commit
+                                        --amend also allows to add additional changes to the commit (after staging them)
+                                        --amend only works for the latest commit
+git commit --fixup <commit> commit changes as a fix of an older commit
+                                can be then squashed by interactive rebase into a single commit:
+                                git rebase -i HEAD~3 --autosquash
+
+git tag v1 <commit>         create a tag called 'v1' on a commit
+git tag v1                  create a tag called 'v1' on HEAD
+
+git describe <commit>       shows how far away the given commit is from the closest tag
+                              output in the form of: <tag>_<numCommits>_g<hash>
+                                where <hash> is the hash of the given commit
+
+git revert <commit>         revert a commit (by creating a new commit with opposite changes)
+git revert HEAD             revert the current commit
+
+git reset <filename>        remove a file from staging area
+git reset --hard            discard all local changes
+git reset --hard <commit>   set the HEAD pointer to an older revision - commits made after this revision appear to be undone
+    --hard                      no local changes should survive (clean working copy)
+    --mixed                     keeps changes from the commits that were undone as local changes
+git reset HEAD~1            move the current branch one commit back - the newest commit appears to be undone
+
+git reflog                  journal of all HEAD movements, allows to e.g. revert accidental actions (reverting commits, deleting branches etc)
+
+git cherry-pick <commit>    copy an individual commit over to the current branch
+
+git rebase <base>           rebase current branch onto <base>
+                              change the base commit of the current branch to commit <base>
+                              https://www.benmarshall.me/git-rebase/
+git rebase <base> <branch>  rebase <branch> onto <base>
+git rebase -i HEAD~3        start an interactive rebase session going three commits back
+
+git remote                  list remotes
+    -v                          verbose output
+git remote add <name> <url>    add a new remote (by convention, if there is only a single remote it is usually called 'origin')
+
+git push <remote> <branch>  push a branch to a remote (branch will be created in remote if it doesn't exist)
+git push <remote> <source>:<dest>   push location <source> to branch <dest> on remote
+                                        location can be a branch, tag, HEAD^, foo~2 etc.
+                                        branch <dest> will be created if it doesn't exist on remote
+
+git pull <remote> <branch>  pull changes from a remote to a local branch
+
+git fetch <remote>          update local copies of all remote branches (without merging right away as is the case for git pull)
+    git pull origin master
+    =
+    git fetch origin
+    git merge master origin/master
+git fetch <remote> <branch> only grab the commits from remote branch <branch>
+git fetch --prune           after fetching, remove any remote-tracking branches which no longer exist on the remote
+
+git gc                      run git garbage collection to delete unreachable commits (runs automatically from time to time)

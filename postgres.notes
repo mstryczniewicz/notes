@@ -1,0 +1,14 @@
+/etc/init.d/postgres                    startup script
+  sudo /etc/init.d/postgres restart     restarts the server
+
+/etc/postgres/<ver>/main                location of config files
+  postgresql.conf                       main config file
+  pg_hba.conf                           client authentication config file
+
+settings required to connect from other machines:
+  listen_addresses='*'                  in postgresql.conf
+  host all all 192.168.1.0/24 md5       in pg_hba.conf
+
+psql console:
+  \l                            show all databases
+  \connect <db_name>            connects to database <db_name>

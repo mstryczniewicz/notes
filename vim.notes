@@ -1,0 +1,47 @@
+v             visual mode
+Shift-v       line visual mode
+Ctrl-v        block visual mode
+
+:sp           open a new window above
+:vs           open a new window to the left
+:tabnew       open a new tab
+:e            open a file in current tab
+:Ex           browse present directory
+:w            write selection to file (in visual mode)
+:r !cmd       execute and insert results of 'cmd'
+:!cmd         execute command 'cmd'
+
+H             move to the highest displayed line
+M             move to the middle displayed line
+L             move to the lowest displayed line
+
+f<char>       jump to first found <char> in line (f stands for 'find')
+F<char>       jump to latest found <char> in line (backwards)
+t<char>       jump to first found <char> in line, just before it (t stands for 'to')
+T<char>       jump to latest found <char> in line, just after it
+;             repeat the last char search forwards
+,             repeat the last char search backwards
+
+~             flip case of text selected in visual mode
+=             re-indent the selected text (e.g. in visual mode)
+
+ci[           change inside square brackets [try it here] (i stands for 'inside')
+ca[           change inside square brackets, including brackets (a stands for 'around')
+cit           change inside xml/html tags: <tag>sometext</tag>
+vip           mark the whole paragraph in visual mode
+
+%             jump to a matching parenthesis
+.             repeat the previous editing command
+
+:!command     run a single shell command without leaving vi
+:r!command    run a command and insert its output right after cursor
+
+Ctrl-o        move to older position
+Ctrl-i        move to newer position
+
+:marks        show bookmarks (registers)
+
+set list      show whitespace
+set unlist    hide whitespace
+set list!     toggle 'set list'
+

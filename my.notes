@@ -1,0 +1,70 @@
+ssd trim
+systemctl cat fstrim.service            view configuration of fstrim
+systemctl status fstrim.timer           view status of the timer
+systemctl daemon-reload                 reload systemctl configuration
+systemctl restart <service>             restart a service
+
+komendy:
+fstrim -a -v            trim all ssd drives
+fdisk -l                displays all partitions
+lsblk                   lists block devices
+hdparm -I /dev/sda      get SATA/IDE device parameters
+lsb_release -a          system version
+df -h                   reports file system disk space usage
+strace                  trace system calls and signals
+pv                      pipe viewer
+uname                   print system information (e.g. kernel version etc)
+cut                     remove sections from each line of files
+  e.g. "test.exe" | cut -f1 -d'.'    returns "test"
+basename                strip directory and suffix from filenames
+blkid                   locate/print bulk device attributes (disks)
+efibootmgr              configure uefi boot manager (boot order etc)
+inxi -Fxzc0             system information
+ps | grep $$            check what is the current shell
+mkswap                  create a swap partition
+mhwd-kernel -i linux58  update the kernel to versin linux58
+man zshoptions          zshoptions manual page
+autoload -Uz zsh-newuser-install        run the zsh initial setup
+zsh-newuser-install -f                  same as above?
+sudo usermod -aG docker <user>          add user to group docker - no sudo required to run docker commands
+dkms status             show status of installed kernel modules
+xargs                   build and execute commands from stdin
+xkill                   kill a process by clicking its window
+
+utils:
+man tmpfiles.d          config ktory steruje czyszczeniem katalogu /tmp
+man resolv.conf         resolver configuration file (dns)
+
+aplikacje:
+screenfetch             system info in a terminal
+pavucontrol             aplikacja audio
+alsamixer               built-in audio mixer
+nmap                    network exploration tool
+meld                    visual diff and merge tool
+glances                 CLI based system monitoring tool
+python-pygments         syntax highlighter (https://pygments.org)
+                          (dependency for the colorize zsh plugin)
+pass                    cli password manager
+grub-customizer         allows to configure grub menu and settings
+youtube-dl              command line program to download videos from youtube
+tmux                    terminal multiplexer (multiple terminals in a single window)
+byobu                   terminal multiplexer, builds on tmux and screen
+https://sdkman.io       manage multiple sdk versions
+font-manager            gui font manager
+flameshot               screenshot capture
+edex-ui                 fullscreen scifi terminal (available in AUR as edex-ui-bin)
+safe-rm                 wrapper around rm command that prevents deletion of critical files
+sxiv                    simple image viewer
+ack                     grep replacement, searches code trees
+xclip                   command line interface to the X11 clipboard
+                          required for neovim clipboard integration
+duf                     disk usage utility (du + df) - available in AUR
+nnn                     terminal file manager
+qutebrowser             web browser with vi keybindings
+
+vim config
+    sensible.vim (github repo)
+    powerline (github repo)
+
+/etc/services           list of services running on a machine along with corresponding ports
+/etc/default/grub       grub config file

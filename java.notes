@@ -1,0 +1,507 @@
+HashMap:
+  HashMap<Integer, String> shapes = new HashMap<Integer, String>();
+  shapes.put(6, "hexagon")  adds a new key/value pair or replaces an existing one
+  shapes.get(3)             accesses the value associated with the given key
+  shapes.clear()            removes all elements in a HashMap
+  shapes.remove(1)          removes the value associated with the given key
+  shapes.isEmpty()          returns true if the map is empty
+  shapes.size()             returns the number of key/value pairs
+  shapes.clone()            returns a shallow copy of this HashMap, keys and vals not cloned
+  shapes.containsKey(key)   returns true if this map contains a value for the given key
+  
+Math:
+  Math.random()             returns a double between 0.0 through (but not including) 1.0
+  Math.abs()
+  Math.round()              returns an int or long rounded to the nearest integer value
+  Math.ceil()
+  Math.floor()
+  Math.min()                returns a value that is the minimum of the two arguments
+  Math.max()                returns a value that is the maximum of the two arguments
+  
+ArrayList:                  import java.util.ArrayList
+  ArrayList<Egg> myList = new ArrayList<Egg>();
+  add(Object elem)          adds the object parameter to the list
+  remove(int index)         removes the object at the index parameter
+  remove(Object elem)       removes this object if it's in the list
+  contains(Object elem)     returns true if the list contains the object
+  isEmpty()                 returns true if the list has no elements
+  indexOf(Object elem)      returns either the index of the object or -1
+  size()                    returns the number of elements currently in the list
+  get(int index)            returns the object currently at the index parameter
+  
+declaration of a float var:
+float f = 32.5f       'f' is necessary, otherwise java thinks anything with a floating point is a double
+
+void go {             declaration of a method that returns nothing
+}
+
+int go {              declaration of a method that returns an int
+    return 10;
+}
+
+instantiation of an array:
+int[] array = {2,3,4};
+
+for loop iterating over an array:
+for (int element : arrayOfElements) { }
+
+increment operator - order of operations:
+int x = 0; int z = x++;     result: x = 1, z = 0 (x is first assigned to z and then incremented)
+int x = 0; int z = ++x;     result: x = 1, z = 1 (x is first incremented and then assigned to z)
+
+- the manifest file in a jar file defines which class contains the main method
+- there are two kinds of variables - primitives and object references
+- a method uses parameters, a caller passes arguments
+- instance variables get a default value if not initialized, but local variables don't (won't compile)
+
+Inheritance:
+
+public class Tiger extends Animal {
+  public void roam() {
+    super.roam();           this line calls the inherited version of roam()
+    //my own roam stuff
+  }
+}
+
+- public members are inherited
+- private members are not inherited
+- when a subclass inherits a member it is as if the subclass defined the member itself
+
+Polymorphism:
+
+Animal[] animals = new Animal[5];
+animals [0] = new Dog();            any subclass of Animal can be stored in the Animal[5] array
+animals [1] = new Cat();
+animals [2] = new Wolf();
+animals [3] = new Hippo();
+animals [4] = new Lion();
+
+for (int i = 0; i < animals.length; i++) {
+  animals[i].eat();                 when 'i' is 0, a Dog's eat() method will be called, when 'i' is 1 a Cat's eat() method will be called
+}
+
+class Vet {
+  public void giveShot(Animal a) {  the Animal parameter can take any Animal subclass as an argument
+    a.makeNoise();                  makeNoise() method of the actual subclass will be called
+  }
+}
+
+class PetOwner {
+  public void start() {
+    Vet v = new Vet();
+    Dog d = new Dog();
+    Hippo h = new Hippo();
+    v.giveShot(d);                  Dog's makeNoise() runs
+    v.giveShot(h);                  Hippo's makeNoise() runs
+  }
+}
+
+classes cannot be extended in the following scenarios:
+- if a class is not declared as 'public' it is non-public and can only be extended (and used) by classes from the same package
+- a class that is declared as 'final' cannot be extended
+- a class that only has 'private' constructors cannot be extended
+
+rules for overriding methods:
+- arguments must be the same, and return types must be compatible - the method needs to fulfill the contract
+    (return type can be a subclass of the original return type)
+- the method can't be less accessbile (e.g. 'private', where the overriden one is 'public')
+- a method that is declared as 'final' cannot be overridden when subclassing
+- it is possible to overload a method by defining a different set of arguments - but this is not an override
+
+rules for overloading methods:
+- the return types can be different as long as the argument lists are different
+- you can't change only the return type and keep the same arguments - that would be an illegal override
+- you can vary the access level in any direction (public, private etc)
+- in summary, an overloaded method is just a different method that happens to have the same method name
+
+abstract class Canine extends Animal {    an abstact class can be defined with keyword 'abstract'
+  public void roam() {}
+}
+
+public class MakeCanine {
+  public void go() {
+    Canine c;
+    c = new Dog();          it is always possible to assign a subclass object to a superclass reference
+    c = new Canine();       class Canine is abstract, compiler will not allow to do this
+  }
+}
+
+public abstract void eat();         declaration of an abstract method - no method body
+
+- an abstract class cannot be instantiated, it can only be extended
+- all abstract methods have to be overridden (implemented) by a subclass
+- an abstract method can only be declared in an abstract class (and not in a regular class)
+- any class that doesn't explicitly extend another class, implicitly extends the Object class
+
+Casting of objects:
+
+Object o = new Dog();
+o.bark();                   won't work, can only call Object methods at this point
+if (o instanceof Dog) {
+    Dog d = (Dog) o;
+}
+d.bark();                   will work, the object was cast as Dog object
+
+Interfaces:
+
+public interface Pet {                              definition of an interface
+}
+
+public class Dog extends Canine implements Pet {    implementation of an interface
+}
+
+- interface methods are implicitly public and abstract (typing those keywords is optional and not recommended)
+
+How to know whether to make a class, a subclass, an abstract class, or an interface?
+- make a class that doesn't extend anything when your new class doesn't pass the IS-A test for any other type
+- make a subclass only when you need to make a more specific version of a class and need to override or add new behaviours
+- use an abstract class when you want to define a template for a group of subclasses, and you have at least some implementation code that all subclasses could use; make the class abstract when you want to guarantee that nobody can make objects of that type
+- use an interface when you want to define a _role_ that other classes can play, regardless of where those classes are in the inheritance tree
+
+Running a superclass version of a method from a subclass:
+
+abstract class Report {
+  void runReport() {
+    //set-up report
+  }
+  void printReport() {
+    //generic printing
+  }
+}
+
+class BuzzwordsReport extends Report {
+  void runReport() {
+    super.runReport();      keyword 'super' is used to call the superclass version of the method
+    buzzwordCompliance();
+    printReport();
+  }
+}
+
+Life and Death of an Object
+
+public class Duck {
+  public Duck() {           default constructor for class Duck (same name as class, no return type defined)
+  }
+}
+
+- a constructor must have the same name as the class and no return type
+- the thing that separates constructors from methods is no return type defined for constructors
+- constructors are not inherited
+- a compiler creates a default no-args constructory only if no constructor is defined explicitly
+- overloaded methods (and constructors) must have different argument lists
+  - argument list includes the order and types of arguments
+
+public class Duck extends Animal {
+  int size;
+  String name;
+  
+  public Duck(int newsize) {
+    super();                call to a superclass's constructor
+    size = newsize;
+  }
+  
+  public Duck(int newsize, String newname) {
+    this(newsize);          call to another (overloaded) constructor within the same class
+    name = newname;
+  }
+}
+
+- the call to super() must be the first statement in each constructor (if it is explicitly included)
+- the call to this() must be the fist statement in each constructor
+- every constructor can have either a call to super() or this(), but never both
+- an object can become eligible for garbage collection in one of the following three ways
+  - the variable holding the last reference to the object goes out of scope permanently
+  - the variable holding the last reference gets overwritten with a different object
+  - the variable holding the last reference gets assigned the value 'null'
+
+10. Numbers Matter: math, formatting, wrappers, and statistics
+
+- the keyword 'static' lets a method run without any instance of the class
+  - static method means 'behavior not dependent on an instance variable, so no instance/object is required'
+- static method should be called using the class name, not an object reference variable:
+    Math.random() (class), not myFoo.go() (object)
+- value of a static variable is the same for all instances of the class
+- all static variables in a class are initialized before any object of that class can be created
+  - also before any static method of that class runs
+- final static variables are constants
+  - constant variable names should be in all caps
+- a final static variable must be assigned a value either when declared or in a static initializer (below)
+- a 'static initializer' is a block of code that runs when a class is loaded, before any other code can use the class, so it's a great place to initialize a static final variable:
+    class Foo {
+      final static int CONST_X;
+      static {              static initializer
+        CONST_X = 42;
+      }
+    }
+- keyword 'final' can be used to prevent overriding a method or making a subclass:
+    final class Foof {          final class 'Foof' cannot be extended
+      final int size = 3;       final variable 'size' cannot be modified
+      final int weight;         the value of final variable 'weight' must be set in the constructor
+      Foof {
+        weight = 10;            after this point it is no longer possible to modify variable 'weight'
+      }
+      final void calc() {       final method 'calc' cannot be overridden
+      }
+      void doStuff(final int x) {
+        //can't change x
+      }
+      void doMore() {
+        final int z = 7;
+        //can't change z
+      }
+    }
+- a final (non-static) instance variable must be assigned a value either when declared or in the constructor
+- if a class is final its methods do not need to be marked as final
+  - as the class cannot be extended its methods can never be overridden anyway
+- if you have a class with only static methods, and you do not want the class to be instantiated, you can mark the constructor private
+
+int i = 288;
+Integer iWrap = new Integer(i);       wrapping a primitive into an object
+int unWrapped = iWrap.intValue();     unwrapping the value back into a primitive
+
+- autoboxing - automatic wrapping/unwrapping of primitives wherever their respective objects are expected
+  - e.g. int <> Integer
+  - also works the other way around (e.g. passing an Integer object to method foo(int x))
+
+converting Strings into primitives:
+String s = "2";
+int x = Integer.parseInt(s);                        parsing a string into an int
+double d = Double.parseDouble("421.24");            parsing a string into a double
+boolean b = new Boolean("true").booleanValue();     Boolean class does not contain a parseBoolean() method
+                                                      instead the constructor takes and parses a String
+converting primitives into Strings:
+double d = 42.5;
+String dString = "" + d;                any value concatenanted with a String will produce a String
+String dString = Double.toString(d);    alternative way of converting a double to a String
+
+formatting numbers:
+String.format("I have %.2f bugs to fix.", 105452.0984);
+  output: I have 105452.10 bugs to fix.
+String.format("I have %,.2f bugs to fix.", 452.0984);
+  output: I have 105,452.10 bugs to fix.
+String.format("char - %c", 42);
+  output: char - *                        the number 42 represents the char *
+String.format("%tc", new Date());         date formats use two-character types (here 'tc')
+  output: Sun Nov 28 14:52:41 MST 2004
+String.format("%tr", new Date());         get just the time
+  output: 03:01:47 PM
+Date today = new Date();
+String.format("%tA, %tB %td", today, today, today);
+  output: Sunday, November 28
+String.format("%tA, %<tB %<td", today);   result same as above, but without triplicating the argument
+                                            '<' is a flag that says 'use the previous argument again'
+
+everything between the percent sign and the type indicator (d, f, ...) is a formating instruction:
+%,d       insert commas and format the number as a decimal integer
+%.2f      format the number as a floating point with precision of two decimal places
+%,.2f     as above, but insert commas to separate thousands as well
+
+formatting string syntax:
+%[argument number][flags][width][.precision]type    everything in [] is optional, but the order is mandatory
+  argument number       specifies which argument should be used, if more than one is available
+  flags                 special formatting options - inserting commas etc.
+  width                 minimum width - if the number is shorter it will be padded with zeroes
+  .precision            number of decimal places
+  type                  d for decimal integer, f for float, others are also available
+
+classes to do with dates:
+Date                    should be used for a timestamp of "now"
+Calendar                should be used for everything else
+
+Calendar cal = new Calendar();          this will not work - Calendar is an abstract class
+Calendar cal = Calendar.getInstance();  this is how a Calendar can be properly instantiated
+                                          this method will fetch a Calendar subclass appropriate for locale
+
+Calendar c = Calendar.getInstance();
+c.set(2004,0,7,15,40);                  set time to Jan 7, 2004 at 15:40 (month is zero-based)
+long day = c.getTimeMillis();           convert the date to milliseconds since Jan 1, 1970
+day += 1000 * 60 * 60;                  add an hour's worth of milliseconds to the 'day' variable
+c.setTimeInMillis(day);                 update the time with the new value
+System.out.println("new hour " + c.get(c.HOUR_OF_DAY));
+  output: new hour 16                   hour was updated
+c.add(c.DATE, 35);                      add 35 days to the date, which should move us into February
+System.out.println("add 35 days " + c.getTime());
+  output: add 35 days Wed Feb 11 16:40:41 MST 2004
+c.roll(c.DATE, 35);                     roll the date 35 days ahead without changing the month
+System.out.println("roll 35 days " + c.getTime());
+  output: roll 35 days Tue Feb 17 16:40:41 MST 2004
+c.set(c.DATE, 1);                       set the date to 1
+System.out.println("set to 1 " + c.getTime());
+  output: set to 1 Sun Feb 01 16:40:41 MST 2004
+
+key Calendar methods:
+  add(int field, int amount)              adds or subtracts time from the calendar's field
+  get(int field)                          returns the value of the given calendar field
+  getInstance()                           returns a Calendar, you can specify a locale
+  getTimeInMillis()                       returns this Calendar's time in millis, as a long
+  roll(int field, boolean up)             adds or subtracts time without changing larger fields
+  set(int field, int value)               sets the value of a given Calendar field
+  set(year, month, day, hour, minute)     sets a Calendar's time
+  setTimeInMillis(long millis)            sets a Calendar's time based on epoch timestamp
+key Calendar fields:
+  DATE / DAY_OF_MONTH                     get / set the day of month
+  HOUR / HOUR_OF_DAY                      get / set the 12 hour or 24 hour value
+  MILLISECOND                             get / set the milliseconds
+  MINUTE
+  MONTH
+  YEAR
+  ZONE_OFFSET                             get / set raw offset of GMT in millis
+
+11. Risky Behavior: exception handling
+
+catching an exception:
+  try {
+    //do risky thing
+  } catch(FirstException ex) {            'catch' block catches an object of type Exception
+    //handle the first exception
+    ex.printStackTrace();                 print the stack trace of the Exception object
+  } catch(SecondException ex) {
+    //handle the second exception
+  } catch(Exception ex) {                 'Exception' is a parent class of all exceptions
+    //handle the generic exception
+  } finally {                             'finally' block is always executed
+    //code that runs in either case
+    //even if the try or catch block has a return statement
+    //flow jumps to the finally, then back to the return
+  }
+  //once the whole try/catch/finally block is processed, the processing continues below it
+
+  try {
+    Sequencer sequencer = MidiSystem.getSequencer();
+    System.out.println("Successfully got a sequencer");
+  } catch(MidiUnavailableException ex) {
+    System.out.println("Exception");
+  }
+
+declaring a method that throws an exception:
+  public void takeRisk() throws BadException {
+    if (abandonAllHope) {
+      throw new BadException();                 create a new Exception object and throw it
+    }
+  }
+
+- one method will catch what another method throws - an exception is always thrown back to the caller
+- the method that throws has to declare that it might throw the exception
+- compiler checks for everything except RuntimeExceptions (e.g. NullPointerException, ClassCastException)
+  - such exceptions are called 'checked exceptions' (e.g. IOException)
+  - RuntimeExceptions are not checked, and are called 'unchecked exceptions'
+    - such exceptions come from a problem in code logic and should be resolved at development time
+- the compiler guarantees:
+  - if you throw an exception in your code you must declare it using the 'throws' keyword in the method declaration
+  - if you call a method that throws an exception, you must acknowledge that you're aware of the exception possibility - either by wrapping the call in a try/catch block, or by including it in the caller method's declaration (effectively rethrowing the exception)
+- if a method throws multiple exceptions it needs to declare all of them - or their common superclass:
+    public void doStuff() throws FirstException, SecondException {}
+    public void doStuff() throws Exception {}
+- careful with a top level Exception catch block as it will also catch unchecked exceptions (RuntimeExceptions) - therefore it might make it harder to get rid of them at development time:
+    catch(Exception ex) {}
+- a 'try' must be followed by either a 'catch' or a 'finally':
+    try {
+      x.doStuff();
+    } finally {       legal because there is a 'finally', even though there is no catch
+      //cleanup
+    }
+- a 'try' with only a 'finally' (no 'catch') must still declare the exception:
+    void go() throws FooException {
+      try {
+        x.doStuff();
+      } finally {}
+    }
+
+12. A Very Graphic Story - introduction to GUI, event handling, and inner classes
+
+import java.awt.event.*         package that ActionListener and ActionEvent are in
+import javax.swing.*;           package with GUI elements
+
+getting a button's ActionEvent:
+  - implement the ActionListener interface in the class:
+      public class SimpleGui implements ActionListener {}
+  - register the object that needs to receive events with the button:
+      button.addActionListener(this)
+  - define the event-handling method - implement the actionPerformed() method from the ActionListener interface:
+      public void actionPerformed(ActionEvent event) {}
+
+- every type of event has a unique listener associated with it
+- to make a GUI, start with a window, usually a JFrame
+    JFrame frame = new JFrame();
+- it is possible to add widgets (buttons, text, etc.) to the JFrame in the following way:
+    frame.getContentPane().add(BorderLayout.CENTER, button);
+      (class BorderLayout is in the java.awt.* package)
+
+- four steps to making a GUI:
+  - make a window (a JFrame):
+    JFrame frame = new JFrame();
+  - make a component (button, text field, etc.)
+    JButton button = new JButton("click me");
+  - add the component to the frame
+    frame.getContentPane().add(BorderLayout.EAST, button);
+  - display it (give it a size and make it visible)
+    frame.setSize(300, 300);
+    frame.setVisible(true);
+
+inner classes:
+class MyOuterClass {
+  private x;
+  class MyInnerClass {
+    void go() {
+      x = 42;
+    }
+  }
+}
+
+- an inner class can use all the methods and vars of the outer class, even the private ones (and vice-versa)
+  - they can be used just as if they were declared within the inner class
+- an inner class instance must be tied to an outer class instance
+  - with the exception of an inner class defined within a static method
+- if an inner class is instantiated from code within an outer class, it will be automatically 'bonded' with that instance of the outer class
+- it is also possible to instantiate inner class from outside of the outer class by using special syntax:
+    class Foo {
+      public static void main(String[] args) {
+        MyOuter outerObj = new MyOuter();
+        MyOuter.MyInner innerObj = outerObj.new MyInner();
+      }
+    }
+
+14. Saving Objects: serialization
+
+- if a class should be serializable, it needs to implement the Serializable interface - otherwise a serialization attempt will fail at runtime
+  import java.io.*
+  public class Box implements Serializable {...}
+- Serializable interface is in the java.io package
+- example of serializing an object:
+  try {
+    FileOutputStream fs = new FileOutputStream("file.ser"); //file will be created if doesn't exist
+    ObjectOutputStream os = new ObjectOutputStream(fs);     //chaining the streams
+    os.writeObject(myBox);
+    os.close();   //closing this stream will also close the underlying (chained) ones
+  } catch (Exception ex) {
+    ex.printStackTrace();
+  }
+- a 'transient' keyword can be used to mark a variable that should be skipped during serialization
+  transient String currentID;
+- transient variables that are object references have the value null when deserialized
+- transient variables that are primitives have the default value (0, false, etc.) when deserialized
+- example of a deserialization:
+  try {
+    FileInputStream fs = new FileInputStream("MyGame.ser"); //exception if the file doesn't exist 
+    ObjectInputStream os = new ObjectInputStream(fs);
+    Object one = os.readObject();   //objects are read in the same order as they were saved
+    Object two = os.readObject();
+    Object three = os.readObject();
+    GameCharacter elf = (GameCharacter) one;  //the return value of readObject() is Object, has to be cast
+    GameCharacter troll = (GameCharacter) two;
+    GameCharacter magician = (GameCharacter) three;
+    os.close();
+  } catch (Exception ex) {}
+- during deserialization the object's constructor does not run - that would result in the object's default state instead of the one that was saved
+- if a subclass is serializable but its superclass isn't, during deserialization the constructor of the superclass will run just as if a new object were being created 
+- static variables are not serialized (they are "one per class", not "one per object")
+- if a superclass is serializable, its subclass is as well, even if not explicitly declared
+
+- writing to a file:
+  try {
+    FileWriter writer = new FileWriter("Foo.txt");  //file will be created if it doesn't exist
+    writer.write("hello foo!");
+    writer.close();
+  } catch(IOException ex) {
+    ex.printStackTrace();
+  }

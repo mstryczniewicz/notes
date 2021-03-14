@@ -1,0 +1,12 @@
+vagrant init <box name>             initialize a vagrant env and create a Vagrantfile
+vagrant up                          start the machine
+vagrant suspend                     suspend the machine
+vagrant halt                        graceful shutdown of the machine
+vagrant destroy                     destroy the machine
+vagrant ssh                         ssh into a machine running inside the current environment
+vagrant reload                      reload the machine
+    --provision                         run provisioners on reload (usually they are run only on first vagrant up)
+
+vagrant box list                    list all downloaded box files
+vagrant box remove <box name>       remove the specified box
+vagrant box add <box name>          install a box without creating a new Vagrantfile

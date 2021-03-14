@@ -1,0 +1,94 @@
+https://kubernetes.io/docs/reference/kubectl/overview/  overview of kubectl commands
+
+general syntax:
+  kubectl [action] [object]
+
+kubectl version                         client (kubectl) and cluster version info
+kubectl cluster-info                    cluster info
+kubectl get                             list resources
+kubectl delete                          delete an object from a cluster
+kubectl describe                        show detailed information about an object
+kubectl logs                            print the logs from a container in a pod
+kubectl exec                            execute a command on a container in a pod
+kubectl proxy                           create a proxy between localhost and k8s cluster
+  access a pod via a proxy (trailing slash is important):
+  curl http://localhost:8001/api/v1/namespaces/default/pods/<pod-name>/proxy/
+kubectl port-forward                    set up port forwarding for a given service
+  kubectl port-forward service/kibana 5601    expose port 5601 of service kibana (reachable at localhost:5601)
+
+kubernetes objects:
+  node
+  pod
+  service
+
+kubectl get all                         view all objects in the default namespace
+  --all-namespaces                        in all namespaces instead
+
+kubectl get pods                        list all pods in the cluster
+  --watch                                 watch the status in real time
+  -o wide                                 display in output format "wide"
+  -l <key>=<value>                        only list pods with label <key>=<value>
+  --selector='<key>=<val>'                same as above
+  --field-selector status.phase=Running   with value of status.phase field equal to "Running"
+  --field-selector=status.phase!=Running,spec.restartPolicy=Always    chaining field selectors
+
+kubectl logs pods/<pod-name>            view logs of the chosen pod
+kubectl label pod <pod-name> <key>=<value>    add label to a pod
+kubectl label pods -l app=nginx tier=fe       label all pods that are labeled app=nginx with a label tier=fe
+
+kubectl get service <service-name>      view properties of a service
+kubectl describe service <service-name> view description of a service
+kubectl delete service -l <key>=<value> delete all services with the given label
+kubectl delete -f service.yaml          deletes a service specified in service.yaml
+
+kubectl create deployment hello-node --image=k8s.gcr.io/echoserver:1.4      create a deployment based on the specified image
+  --replicas=<nr>                       specify the number of replicas
+kubectl expose deployment hello-node --type=LoadBalancer --port=8080        expose deployment as a service
+kubectl describe deployment hello-node                                      view info about a deployment
+kubectl delete -f deployment.yaml       deletes a deployment specified in deployment.yaml
+
+kubectl scale --replicas 5 deployment <deployment-name>         scale a running deployment to 5 replicas
+kubectl autoscale deployment <deployment-name> --min=1 --max=3  autoscale between 1 and 3 replicas
+kubectl set image deployment <deployment-name> <deployment-name(?)>=<image-name>  update image to a new version, rolling update will be performed automatically if enabled
+kubectl rollout status deployment <deployment-name>             view status of a rollout
+kubectl rollout undo deployment <deployment-name>               rollback a rollout
+
+kubectl exec <pod-name> -- <command>    execute a command on a container running in the specified pod
+kubectl exec -it <pod-name> -- bash     start a bash session inside the pod's container
+
+kubectl wait --for=condition=ready pod -l app=inventory     check if pod is in ready state
+
+kubectl create configmap sys-app-name --from-literal name=my-system     create a configmap named sys-app-name on a cluster, with a key called 'name' which has a value 'my-system'
+  --from-literal                        provide key-value pairs directly
+  --from-file                           get key-value pairs from a file
+  --from-env-file                       ?
+kubectl create secret generic sys-app-credentials --from-literal username=bob --from-literal password=bobpw         create a secret named sys-app-credentials on a cluster, with key-value pairs provided via the --from-literal parameters
+
+kubectl replace --force -f kubernetes.yaml    replace old kubernetes deployment/service with the ones specified in kubernetes.yaml
+
+kubectl get rs                          view replicasets created by deployments
+kubectl get events                      view cluster events
+kubectl config view                     view the kubectl configuration
+
+operations can be chained either via $() or via xorgs:
+kubectl get $(kubectl create -f docs/concepts/cluster-administration/nginx/ -o name | grep service)
+kubectl create -f docs/concepts/cluster-administration/nginx/ -o name | grep service | xargs -i kubectl get {}
+
+kubectl config set-context --current --namespace=<namespace-name>   permanently set namespace for all subsequent kubectl commands
+
+kubectl apply -f deployment.yaml        applies config defined in deployment.yaml to the k8s cluster (e.g. deploy application)
+kubectl apply -f service.yaml           same as above (in this case start a service)
+
+kubectl diff -f deployment.yaml         view what changes would be made by kubectl apply
+kubectl diff -f config/                 same as above, for a directory of configs
+  -R                                      process dirs recursively
+
+kubectl api-resources --namespaced=true    view which resources are in a namespace
+kubectl api-resources --namespaced=false   view which resources are not in a namespace
+
+minikube start                          start a minikube kubernetes cluster
+minikube stop                           stop a minikube kubernetes cluster
+minikube ip                             view ip of the running cluster (under which the deployed service can be accessed)
+minikube addons list                    view a list of built-in minikube addons
+minikube dashboard                      open the dashboard of the cluster
+minikube service hello-node             access service hello-node in a default browser
