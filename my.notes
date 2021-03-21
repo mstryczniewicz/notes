@@ -58,9 +58,10 @@ sxiv                    simple image viewer
 ack                     grep replacement, searches code trees
 xclip                   command line interface to the X11 clipboard
                           required for neovim clipboard integration
-duf                     disk usage utility (du + df) - available in AUR
+duf                     disk usage utility (df replacement) - available in AUR
 nnn                     terminal file manager
 qutebrowser             web browser with vi keybindings
+ncdu, gdu               disk usage analysis tools
 
 vim config
     sensible.vim (github repo)

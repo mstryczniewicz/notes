@@ -28,6 +28,7 @@ T<char>       jump to latest found <char> in line, just after it
 ci[           change inside square brackets [try it here] (i stands for 'inside')
 ca[           change inside square brackets, including brackets (a stands for 'around')
 cit           change inside xml/html tags: <tag>sometext</tag>
+ciw           change entire word
 vip           mark the whole paragraph in visual mode
 
 %             jump to a matching parenthesis
@@ -38,8 +39,10 @@ vip           mark the whole paragraph in visual mode
 
 Ctrl-o        move to older position
 Ctrl-i        move to newer position
+Ctrl-r        paste in insert mode (need to pick register)
 
-:marks        show bookmarks (registers)
+:reg          show content of registers
+:marks        show bookmarks
 
 set list      show whitespace
 set unlist    hide whitespace
