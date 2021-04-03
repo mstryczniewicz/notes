@@ -2,6 +2,11 @@ v             visual mode
 Shift-v       line visual mode
 Ctrl-v        block visual mode
 
+in visual mode:
+o             move to the other end of marked area
+u             change marked text to lowecase
+U             change marked text to uppercase
+
 :sp           open a new window above
 :vs           open a new window to the left
 :tabnew       open a new tab
@@ -15,6 +20,13 @@ H             move to the highest displayed line
 M             move to the middle displayed line
 L             move to the lowest displayed line
 
+J             merge line below to the current one with space in between
+gJ            merge line below to the current one with no space in between
+
+50%           move to 50% of the document
+:#            jump to line #
+#G / #gg      jump to line # (line numbering needs to be enabled)
+
 f<char>       jump to first found <char> in line (f stands for 'find')
 F<char>       jump to latest found <char> in line (backwards)
 t<char>       jump to first found <char> in line, just before it (t stands for 'to')
@@ -22,14 +34,23 @@ T<char>       jump to latest found <char> in line, just after it
 ;             repeat the last char search forwards
 ,             repeat the last char search backwards
 
+*             jump to next instance of the current word
+#             jump to previous instance of the current word
+
 ~             flip case of text selected in visual mode
 =             re-indent the selected text (e.g. in visual mode)
+==            re-indent the current line
+gg=G          re-indent the entire buffer
 
-ci[           change inside square brackets [try it here] (i stands for 'inside')
-ca[           change inside square brackets, including brackets (a stands for 'around')
-cit           change inside xml/html tags: <tag>sometext</tag>
 ciw           change entire word
-vip           mark the whole paragraph in visual mode
+cit           change inside xml/html tags: <tag>sometext</tag>
+vip           select the whole paragraph in visual mode
+
+ci[           change inside square brackets (i stands for 'inside')
+ca[           change inside square brackets, including brackets (a stands for 'around')
+
+>ib           indent inside parentheses ()
+>iB           indent inside braces {}
 
 %             jump to a matching parenthesis
 .             repeat the previous editing command
@@ -41,10 +62,54 @@ Ctrl-o        move to older position
 Ctrl-i        move to newer position
 Ctrl-r        paste in insert mode (need to pick register)
 
+registers:
 :reg          show content of registers
+"xy           yank into register x
+"xp           paste contents of register x
+"*p           paste contents from system clipboard
+
+special registers:
+0 - last yank
+" - unnamed register, last delete or yank
+% - current file name
+# - alternate file name
+* - clipboard contents (X11 primary)
++ - clipboard contents (X11 clipboard)
+/ - last search pattern
+: - last command-line
+. - last inserted text
+- - last small (less than a line) delete
+= - expression register
+_ - black hole register
+
 :marks        show bookmarks
 
 set list      show whitespace
 set unlist    hide whitespace
 set list!     toggle 'set list'
 
+]p            paste and adjust indent to current line
+:%retab!      retab the whole file
+:so ~/.vimrc  source vim config
+
+:verbose set ts? et?    check values of ts and et
+:help up-down-motions   help on movement commands
+:help matchpairs        how to define matchpairs (% jumps between them)
+
+:sav              save file under a new name and switch to the new copy
+:w !sudo tee %    write out the file using sudo and tee command (% is filename?)
+                    useful when file was opened as read only
+
+:e            open a file in a new buffer
+:bn           move to the next buffer
+:bp           move to the previous buffer
+:bd           close buffer
+:b#           move to the specified buffer (by number)
+:b filename   move to the specified buffer (by filename)
+:ls           list all open buffers
+:tab ba       edit all buffers as tabs
+
+qa            record macro a
+q             stop recording macro
+@a            run macro a
+@@            run last macro again
