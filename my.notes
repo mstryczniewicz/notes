@@ -4,7 +4,7 @@ systemctl status fstrim.timer           view status of the timer
 systemctl daemon-reload                 reload systemctl configuration
 systemctl restart <service>             restart a service
 
-komendy:
+commands:
 fstrim -a -v            trim all ssd drives
 fdisk -l                displays all partitions
 lsblk                   lists block devices
@@ -36,19 +36,20 @@ man tmpfiles.d          config ktory steruje czyszczeniem katalogu /tmp
 man resolv.conf         resolver configuration file (dns)
 
 aplikacje:
-screenfetch             system info in a terminal
-pavucontrol             aplikacja audio
-alsamixer               built-in audio mixer
+screenfetch/neofetch    system info in a terminal
+pavucontrol             pulseaudio volume control
+alsamixer               soundcard mixer
 nmap                    network exploration tool
 meld                    visual diff and merge tool
 glances                 CLI based system monitoring tool
 python-pygments         syntax highlighter (https://pygments.org)
                           (dependency for the colorize zsh plugin)
 pass                    cli password manager
+tomb                    file encryption
 grub-customizer         allows to configure grub menu and settings
 youtube-dl              command line program to download videos from youtube
-tmux                    terminal multiplexer (multiple terminals in a single window)
-byobu                   terminal multiplexer, builds on tmux and screen
+tmux                    terminal multiplexer
+byobu                   wrapper for tmux and screen with alternative keybindings
 https://sdkman.io       manage multiple sdk versions
 font-manager            gui font manager
 flameshot               screenshot capture
@@ -62,10 +63,7 @@ duf                     disk usage utility (df replacement) - available in AUR
 nnn                     terminal file manager
 qutebrowser             web browser with vi keybindings
 ncdu, gdu               disk usage analysis tools
-
-vim config
-    sensible.vim (github repo)
-    powerline (github repo)
+lazygit                 git client for terminal
 
 /etc/services           list of services running on a machine along with corresponding ports
 /etc/default/grub       grub config file
