@@ -8,6 +8,7 @@ commands:
 fstrim -a -v            trim all ssd drives
 fdisk -l                displays all partitions
 lsblk                   lists block devices
+lscpu                   information about cpu architecture
 hdparm -I /dev/sda      get SATA/IDE device parameters
 lsb_release -a          system version
 df -h                   reports file system disk space usage

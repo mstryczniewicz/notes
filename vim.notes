@@ -93,8 +93,14 @@ set list!     toggle 'set list'
 :so ~/.vimrc  source vim config
 
 :verbose set ts? et?    check values of ts and et
+:scriptnames            list all sourced scripts in order loaded
 :help up-down-motions   help on movement commands
 :help matchpairs        how to define matchpairs (% jumps between them)
+:help packages          help on built-in vim package management
+:help startup           what happens at vim startup
+:help runtimepath       dirs where runtime files and plugins are loaded from
+:version                print version and build information
+:echo $VAR              check value of an env var
 
 :sav              save file under a new name and switch to the new copy
 :w !sudo tee %    write out the file using sudo and tee command (% is filename?)
@@ -113,3 +119,7 @@ qa            record macro a
 q             stop recording macro
 @a            run macro a
 @@            run last macro again
+
+search and replace across multiple files (https://nithinbekal.com/posts/vim-search-replace)
+:grep original_string
+:cfdo %s/original_string/new_string/g | write
