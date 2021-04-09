@@ -84,6 +84,22 @@ _ - black hole register
 
 :marks        show bookmarks
 
+:let          list all variables and their values, except env vars
+:let g:       list vars of a particular type (in this case g for global)
+types of variables (the letter is a prefix):
+g:  global variables
+b:  local buffer variables
+w:  local window variables
+t:  local tab page variables
+s:  script-local variables
+l:  local function variables
+v:  Vim variables
+
+:redir @a     redirect output of subsequent command(s) to register a
+:let
+:redir END    finish output redirection
+"ap           paste contents of register a
+
 set list      show whitespace
 set unlist    hide whitespace
 set list!     toggle 'set list'
@@ -99,6 +115,9 @@ set list!     toggle 'set list'
 :help packages          help on built-in vim package management
 :help startup           what happens at vim startup
 :help runtimepath       dirs where runtime files and plugins are loaded from
+:help vim-arguments     vim startup arguments
+:help startup-options   vim startup options
+:help matchit           help on built-in matchit plugin functionality
 :version                print version and build information
 :echo $VAR              check value of an env var
 
