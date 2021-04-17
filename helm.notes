@@ -1,0 +1,29 @@
+helm repo add [name] [url]        add a repository to helm under the name [name]
+helm repo list                    list all configured repositories
+helm repo update                  update the local list of charts
+helm repo remove [name]           remove a repository
+
+helm search hub [name]            search the Artifact Hub (https://artifacthub.io)
+helm search repo [name]           search local repositories for a given string
+
+helm install [release] [chart]    install a chart and name it [release]
+  --generate-name                       name will be generated automatically
+  -f values.yaml                        pass custom values from a file
+  --set name=value                      pass custom values on the command line
+
+helm upgrade [release] [chart]    upgrade a release to a new version of a chart
+  -f values.yaml                    pass custom values from a file
+
+helm uninstall [release]          uninstall a release
+  --keep-history                    release history will be kept
+
+helm rollback [release] [rev]     rollback a release to a previous revision
+
+helm status [release]             show status and config info of a release
+helm get values [release]         show custom values set in a release
+
+helm show values [chart]          show configurable values of a chart
+helm show chart [chart]           show features of a chart
+helm show all [chart]             show all info about a chart
+
+helm list                         list all releases that were deployed by helm
