@@ -92,3 +92,8 @@ minikube ip                             view ip of the running cluster (under wh
 minikube addons list                    view a list of built-in minikube addons
 minikube dashboard                      open the dashboard of the cluster
 minikube service hello-node             access service hello-node in a default browser
+minikube tunnel                         exposes external IP of a loadbalancer service
+minikube service [-n NAMESPACE] [--url] NAME    allows to access a service running on minikube
+  minikube service spark-ui-proxy --url 192.168.99.100:30621
+  minikube service jenkins
+minikube docker-env                     prints instructions how to point shell to minikube's docker daemon
