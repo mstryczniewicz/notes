@@ -7,8 +7,8 @@ o             move to the other end of marked area
 u             change marked text to lowecase
 U             change marked text to uppercase
 
-:sp           open a new window above
-:vs           open a new window to the left
+:sp/:split    open a new horizontal split
+:vs/:vsplit   open a new vertical split
 :tabnew       open a new tab
 :e            open a file in current tab
 :Ex           browse present directory
