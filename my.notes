@@ -65,6 +65,11 @@ nnn                     terminal file manager
 qutebrowser             web browser with vi keybindings
 ncdu, gdu               disk usage analysis tools
 lazygit                 git client for terminal
+stacer                  system monitoring / cleanup software
+app outlet              app store with AppImages, Snaps, and Flatpaks
+blanket                 ambient noise app
+aerc                    terminal email client
+zathura                 pdf viewer
 
 /etc/services           list of services running on a machine along with corresponding ports
 /etc/default/grub       grub config file
