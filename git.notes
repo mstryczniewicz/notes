@@ -6,6 +6,7 @@ git init                    initialize a git repository
 git status                  current status of the repository
 
 git add <filename>          add a file to staging area
+    -u                          add changes only for files that are already tracked by git
 
 git show <commit>           view all changes that were made in a commit compared to its parent
 

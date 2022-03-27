@@ -1,4 +1,24 @@
 #           cycle audio tracks
-j           cycle subtitles
+
+j           next subtitle
+J           prev subtitle
+z           increase subtitle delay
+x           decrease subtitle delay
+
+^2          skip to next chapter
+^1          skip to prev chapter
+
 f           fullscreen
 q           quit
+m           mute
+v           toggle subtitles
+
+l           a-b loop
+L           toggle loop of current file
+
+<           previous video/track
+>           next video/track
+
+.           next frame
+,           prev frame
+

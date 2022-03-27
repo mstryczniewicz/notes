@@ -1,0 +1,8 @@
+nginx -t            validate config file (e.g. after modifications)
+nginx -s reload     reload nginx (e.g. after updating configuration)
+
+priority of 'location' prefixes:
+exact                 =
+preferential prefix   ^~
+regex                 ~ or ~*
+prefix                none

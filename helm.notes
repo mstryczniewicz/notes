@@ -11,6 +11,8 @@ helm install [release] [chart]    install a chart and name it [release]
   -f values.yaml                        pass custom values from a file
   --set name=value                      pass custom values on the command line
 
+helm repo update                  update local chart repositories
+
 helm upgrade [release] [chart]    upgrade a release to a new version of a chart
   -f values.yaml                    pass custom values from a file
 

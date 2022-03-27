@@ -70,6 +70,9 @@ app outlet              app store with AppImages, Snaps, and Flatpaks
 blanket                 ambient noise app
 aerc                    terminal email client
 zathura                 pdf viewer
+ttyper                  terminal-based typing test
+hstr                    view and manage history
+virt-manager            graphical front end to KVM
 
 /etc/services           list of services running on a machine along with corresponding ports
 /etc/default/grub       grub config file

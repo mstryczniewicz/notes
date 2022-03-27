@@ -1,0 +1,196 @@
+------------------------------------------------------------
+data types (https://groovy-lang.org/objectorientation.html)
+------------------------------------------------------------
+def var = <value>                     declare a variable
+int var = 10                          declare an int variable
+String var = 'groovy'                 declare a String variable
+Boolean var = true                    declare a Boolean variable
+def (a,b,c) = [1,2,3]                 declare multiple variables at once
+def (String a, int b, double c)       declare multiple variables with types
+
+def var = (byte)10                    typecasting to byte
+long l = 100000L                      typecasting to long
+float f = 100.001F                    typecasting to float
+
+operators (https://groovy-lang.org/operators.html)
+9 / 5 == 1.8                          division
+9.intdiv(5) == 1                      integer division (result is an integer)
+
+==                                    equal
+!=                                    not equal
+===                                   identical
+!==                                   not identical
+
+ternary operator
+result = condition ? 'True' : 'False'
+
+elvis operator
+displayName = user.name ?: 'Anonymous'    return Anonymous if expression resolves to false-ish
+
+------------------------------------------------------------
+conditional statements (https://groovy-lang.org/semantics.html)
+------------------------------------------------------------
+if (num == 10) {
+  println "num is 10"
+}
+else if (num == -10) {
+  println "num is -10"
+}
+else {
+  println "num is not 10 or -10"
+}
+
+switch(x) {
+  case 0:
+    println "x is zero"
+    break
+  case {x>0}:
+    println "x is positive"
+    break
+  case {x<0}:
+    println "x is negative"
+    break
+  default:
+    println "invalid number"
+}
+
+------------------------------------------------------------
+loops
+------------------------------------------------------------
+for(int i=1; i<5; i++) {
+  println i
+}
+
+for(i in 1..5) {
+  println i
+}
+
+1.upto(5) { println "$it" }         iterate from 1 to 5, access current element with $it
+5.times { println "$it" }           iterate five times starting from 0
+1.step(10, 2) { println "$it" }     step from 1 to 10 with increment 2
+
+int i=1
+while(i<5) {
+  println i
+  i++
+}
+
+------------------------------------------------------------
+exception handling
+------------------------------------------------------------
+try {
+  //code
+}
+catch(ArithmeticException aexp) {
+  //handling of arithmetic exception
+}
+catch(Exception exp) {
+  //generic exception handling code
+  println exp.getCause()
+  println exp.getMessage()
+  exp.printStackTrace()
+}
+finally {
+  //code that always executes
+}
+
+------------------------------------------------------------
+strings (https://groovy-lang.org/syntax.html)
+------------------------------------------------------------
+'...'                             single quoted string
+"..."                             double quoted string
+'''...'''                         triple quoted string
+"""..."""                         triple double quoted string
+/.../                             slashy string
+$/.../$                           dollar slashy string ($ is escape character, useful for regex)
+
+def name = "Name"
+println "My name is " + name
+println "My name is ".concat(name)
+println "My name is ${name}"      string interpolation
+
+def s1 = """This is a multiline
+string inside a triple double quotes"""
+
+def name = "Name"
+println name[2]                   prints "m" (character at index 2, starting from 0)
+println name[-3]                  prints "a" (third character from the end)
+println name[0..2]                prints characters between index positions 0 and 2 (inclusive)
+println name[5..3]
+println name[0,2,3]
+println name.substring(2)         substring starting from index position 2
+println name.substring(1,4)       substring between index positions 1 (inclusive) and 4 (exclusive)
+println name.subSequence(1,4)     same as above
+
+def str = "This is a groovy string"
+str.split(" ")                    convert to a list using space as delimiter
+print str-("groovy ")             string subtraction, prints out "This is a string"
+str.replace("groovy", "generic")  replaces content in a string
+str.toList()                      converts to a list, every character is a separate element
+"Abc".equals("Abc")               true if strings are equal
+
+def s1 = /a green sky/            slashy string, supports string interpolation and multiline
+def s2 = $/a blue tree/$          dollar slashy string, same as above - useful for regex
+
+------------------------------------------------------------
+methods
+------------------------------------------------------------
+def methodName() {
+  //code
+}
+
+def sum(int a, int b) {
+  return a + b
+}
+
+------------------------------------------------------------
+closures
+------------------------------------------------------------
+def myClosure = { println "Hello World" }
+myClosure.call()
+
+def myClosure = { name -> println "Hello ${name}" }
+myClosure.call("Bob")
+
+def str = "Hello"
+def myClosure = { name -> println "${str} ${name}" }
+myClosure.call("Bob")
+
+def myMethod(clos) {                    a method can take a closure as a parameter
+  clos.call("Groovy")
+}
+myMethod(myClosure)                     a closure can be passed to a method as a parameter
+
+def myClosure = {
+  a,b,c ->                              definition of parameters
+  return (a+b+c)                        definition of return statement
+}
+def result = myClosure(10,20,30)
+
+def myList = ["Apples", "Oranges", "Grapes"]
+myList.each { it }                      return each element of the list (result is a list)
+
+def myMap = ['subject':'groovy', 'topic':'closures']
+myMap.each { it }                       return each key:value pair of the map
+
+def myList = [1,2,3,4,5]
+myList.find { item -> item == 3 }       return an element in the list that is equal to 3
+myList.findAll { item -> item > 3 }     return all elements >3 as a list
+myList.any { item -> item > 5 }         return true if any item is >5
+myList.every { item -> item > 2 }       return true if every item is >2
+myList.collect { item -> item*2 }       return a list with every element multiplied by 2
+
+------------------------------------------------------------
+collections
+------------------------------------------------------------
+myList = ["Apples", "Oranges", "Grapes"]
+myList[1]                               returns the element at index 1
+myList.get(1)                           same as above
+myList[0..2]                            returns elements between indexes 0 and 2
+myList.add(10)                          add an element to a list
+myList<<20                              same as above
+myList = myList + [30,40]               add a list to another list
+myList.pop()                            remove first item from the list
+myList.removeLast()                     remove last item from the list
+myList.itersect([1,2,3])                return an intersection of two lists
+
