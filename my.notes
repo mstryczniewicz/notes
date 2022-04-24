@@ -73,6 +73,8 @@ zathura                 pdf viewer
 ttyper                  terminal-based typing test
 hstr                    view and manage history
 virt-manager            graphical front end to KVM
+fwupd                   update vendor firmware (e.g. uefi in a laptop)
+obsidian                note taking application
 
 /etc/services           list of services running on a machine along with corresponding ports
 /etc/default/grub       grub config file
