@@ -181,8 +181,9 @@ myList.every { item -> item > 2 }       return true if every item is >2
 myList.collect { item -> item*2 }       return a list with every element multiplied by 2
 
 ------------------------------------------------------------
-collections
+lists
 ------------------------------------------------------------
+myList = []                             empty list
 myList = ["Apples", "Oranges", "Grapes"]
 myList[1]                               returns the element at index 1
 myList.get(1)                           same as above
@@ -190,7 +191,136 @@ myList[0..2]                            returns elements between indexes 0 and 2
 myList.add(10)                          add an element to a list
 myList<<20                              same as above
 myList = myList + [30,40]               add a list to another list
-myList.pop()                            remove first item from the list
+myList.pop()                            remove first(?) item from the list
 myList.removeLast()                     remove last item from the list
 myList.itersect([1,2,3])                return an intersection of two lists
+
+------------------------------------------------------------
+maps
+------------------------------------------------------------
+myMap = [:]                             empty map
+myMap = ['name' : 'John', 'age' : 40]
+myMap.name                              returns value under key 'name'
+myMap['name']                           same as above
+myMap.get('name')                       same as above
+myMap.getAt('name')                     same as above
+
+myMap.size()                            return size of the map
+myMap.put('city', 'Paris')              add a new key-value pair to the map
+myMap.containsKey('city')               returns true if map contains a given key
+myMap.containsValue('Paris')            returns true if map contains a given value
+
+def employee = myMap.clone()            clones the map
+def employee = myMap.entrySet()         returns a set of the contents of the map
+myMap.each {key,value ->                run a piece of logic for each key-value pair
+  println "$key : $value"
+}
+myMap.eachWithIndex { key,value,i ->    same as above, but with index
+  println "$i | $key : $value"
+}
+myMap.each { entry ->                   iterate over map entries
+  println "$entry.key : $entry.value"
+}
+myMap.eachWithIndex { entry,i ->        same as above, but with index
+  println "$i | $entry.key : $entry.value"
+}
+
+map1 = ['a' : 1, 'b' : 2]
+map1.each { entry ->
+  assert entry.key in ['a', 'b']
+  assert entry.value in [1, 2]
+}
+
+myMap.clear()                           clears the map
+
+------------------------------------------------------------
+ranges
+------------------------------------------------------------
+1..10                                   range of integers from 1 to 10
+1..<10                                  exclusive range (10 is excuded)
+'a'..'Z'                                range of characters from a to Z
+
+def range = 1..10
+range.size()                            returns size of the range
+range.getFrom()                         returns the starting value
+range.getTo()                           returns the ending value
+range.get(3)                            return the element at index 3
+range[3]                                same as above
+range.contains(6)                       returns true if range contains the value
+range.isReverse()                       returns true if range is decreasing
+
+def range2 = range.subList(3, 7)        return range of elements from index 3 to 7 (exclusive)
+
+for (i in 1..10) {}                     ranges can be iterated over
+(1..10).each { i ->                     run a block of code for each element in the range
+  println "value = $i"
+}
+
+println range instanceOf java.util.List   returns true, range is an instance of list
+
+------------------------------------------------------------
+input output
+------------------------------------------------------------
+print "Enter your name: "
+def name = System.console().readLine()  read user's input from the console
+
+printf "My name is %s", name
+  %s    string
+  %-10s string padded with spaces to length 10
+  %10s  string front-padded with spaces to length 10
+  %d    integer
+  %.2f  floating number with two decimal places
+
+------------------------------------------------------------
+files
+------------------------------------------------------------
+String filePath = "data1.txt"
+File myFile = new File(filePath)
+myFile.text                           returns the entire content of the file as a String
+myFile.collect { it }                 read file as a list - each line is a separate element
+myFile as String[]                    read the content of the file as an array (same as list?)
+myFile.readLines()                    read file as a list of Strings
+myFile.eachLine { line ->             run a block of code for each line in the file
+  println "$line"
+}
+myFile.eachLine { line, lineNo ->     same as above, but with line numbers
+  println "$lineNo: $line"
+}
+
+def line
+myFile.withReader { reader ->                     read file with a reader
+  while ((line = reader.readLine()) != null) {    read all lines that exist in the file
+    println "line: $line"
+  }
+}
+
+def outputFile = "data2.txt"
+def reader = myFile.newReader()       keeps the input stream open until closed in code
+new File(outputFile).append(reader)   outputs to a file data that was read by reader
+reader.close()                        input stream needs to be closed explicitly
+
+byte[] contents = myFile.bytes        read file as bytes - useful for reading binary files
+myFile.length()                       shows length of file in bytes
+myFile.isFile()                       returns true if filepath is a file
+myFile.isDirectory()                  return true if filepath is a directory
+new File(dirPath).eachFile {          iterate over files in the given directory
+  files -> println files.getAbsolutePath()
+}
+new File(dirPath).eachFileRecurse {   same as above, but recursively go through dir tree
+  files -> println files.getAbsolutePath()
+}
+
+def newFile = new File("data3.txt")
+newFile << myFile.text                copy the text from myFile to newFile
+newFile.delete()                      delete the file
+newFile.bytes = []                    clear data from the file
+
+File myFile = new File("data.txt")
+myFile.write("This is line 1")        write a string into the file
+myFile << "\nThis is line 2"          same as above
+myFile.text = "Overwrite prev text"   overwrites data in the file
+myFile.withWriter { writer ->         write text to a file with a writer
+  writer.writeLine("Overwrite text")
+}
+myFile.append("This is line 5")       append a line to the file
 
