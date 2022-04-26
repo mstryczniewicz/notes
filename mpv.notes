@@ -22,3 +22,5 @@ L           toggle loop of current file
 .           next frame
 ,           prev frame
 
+0           increase volume
+9           decrease volume
