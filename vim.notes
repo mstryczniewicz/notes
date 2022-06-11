@@ -142,3 +142,6 @@ q             stop recording macro
 search and replace across multiple files (https://nithinbekal.com/posts/vim-search-replace)
 :grep original_string
 :cfdo %s/original_string/new_string/g | write
+
+q:            show command history
+
