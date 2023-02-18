@@ -56,7 +56,7 @@ kubectl delete -f deployment.yaml       deletes a deployment specified in deploy
 kubectl scale --replicas 5 deployment <deployment-name>         scale a running deployment to 5 replicas
   --record                                                        record the command that was used to make a change (will be shown in kubectl describe, under annotations)
 kubectl autoscale deployment <deployment-name> --min=1 --max=3  autoscale between 1 and 3 replicas
-kubectl set image deployment <deployment-name> <deployment-name(?)>=<image-name>  update image to a new version, rolling update will be performed automatically if enabled
+kubectl set image deployment <deployment-name> <container-name>=<image-name>:<ver>  update image to a new version, rolling update will be performed automatically if enabled
 kubectl rollout status deployment <deployment-name>             view status of a rollout
 kubectl rollout undo deployment <deployment-name>               rollback a rollout
 
