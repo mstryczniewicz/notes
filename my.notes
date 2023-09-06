@@ -75,6 +75,7 @@ hstr                    view and manage history
 virt-manager            graphical front end to KVM
 fwupd                   update vendor firmware (e.g. uefi in a laptop)
 obsidian                note taking application
+bat                     cat clone with syntax highlighting and git integration
 
 /etc/services           list of services running on a machine along with corresponding ports
 /etc/default/grub       grub config file

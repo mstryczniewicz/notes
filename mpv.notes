@@ -1,3 +1,4 @@
+keybindings:
 #           cycle audio tracks
 
 j           next subtitle
@@ -26,3 +27,6 @@ L           toggle loop of current file
 
 0           increase volume
 9           decrease volume
+
+options:
+--loop-playlist       loop playlist forever

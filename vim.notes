@@ -83,6 +83,10 @@ special registers:
 _ - black hole register
 
 :marks        show bookmarks
+:help mark-motions    help on mark motions
+
+''            jump to last cursor location (start of line)
+``            jump to last cursor location (same location within line)
 
 :let          list all variables and their values, except env vars
 :let g:       list vars of a particular type (in this case g for global)

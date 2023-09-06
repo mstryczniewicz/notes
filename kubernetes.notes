@@ -38,6 +38,7 @@ kubectl label pod <pod-name> <key>=<value>    add label to a pod
 kubectl label pods -l app=nginx tier=fe       label all pods that are labeled app=nginx with a label tier=fe
 
 kubectl get service <service-name>      view properties of a service
+kubectl get endpoints <service-name>    show a list of endpoints (pods) behind a service
 kubectl describe service <service-name> view description of a service
 kubectl delete service -l <key>=<value> delete all services with the given label
 kubectl delete -f service.yaml          deletes a service specified in service.yaml
@@ -59,6 +60,8 @@ kubectl autoscale deployment <deployment-name> --min=1 --max=3  autoscale betwee
 kubectl set image deployment <deployment-name> <container-name>=<image-name>:<ver>  update image to a new version, rolling update will be performed automatically if enabled
 kubectl rollout status deployment <deployment-name>             view status of a rollout
 kubectl rollout undo deployment <deployment-name>               rollback a rollout
+  --to-revision=1                                                 rollback to the specified revision
+kubectl rollout history deployment <deployment-name>            show list of revisions (change-cause column contains the command that was used to perform the change, but only if it was executed with parameter --record)
 
 kubectl exec <pod-name> -- <command>    execute a command on a container running in the specified pod
 kubectl exec -it <pod-name> -- bash     start a bash session inside the pod's container
